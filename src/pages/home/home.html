@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <p *ngIf="timeSheet && timeSheet.length == 0; else registerList">No registers today!</p>
+  <ng-template #registerList>
+    <ion-list>
+        <h1>Hours registered today:</h1>
+      <ion-item-sliding detail-push *ngFor="let time of timeSheet">
+        <ion-item (click)="onUpdate(time)">{{time.hour}}</ion-item>
+        <ion-item-options side="right">
+          <button ion-button icon-only color="primary" (click)="onUpdate(time)">
+            <ion-icon name="create"></ion-icon>
+          </button> 
+          <button ion-button icon-only color="danger" (click)="onDelete(time)">
+            <ion-icon name="trash"></ion-icon>
+          </button> 
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ng-template> 
+
+
+
+
+  <h1>Set a new time:</h1>
+  <ion-item>
+    <ion-label>Date</ion-label>
+    <ion-datetime displayFormat="h:mm A" [(ngModel)]="newDate"></ion-datetime>
+  </ion-item>
+  <br>
+  <button (click)="onCreate()" ion-button full>Set Time</button>
+  <br>
+  <button *ngIf="timeSheet && timeSheet.length >= 2;" (click)="onSave()" ion-button full>End journey</button>
+</ion-content>
