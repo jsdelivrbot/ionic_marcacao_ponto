@@ -32,12 +32,13 @@ export class HomePage {
     
   }
 
-  private showAlert(options: {itemSliding?: ItemSliding, title: string, type: string, timeSheet?: TimeSheet}){
+  private showAlert(options: {itemSliding?: ItemSliding, title: string, type: string, timeSheet?: TimeSheet}):void{
     let alertOptions: AlertOptions = {
       title: options.title,
       inputs: [
         {
-          newHour: 'hour',
+          name: 'newHour',
+          placeholder: 'New hour'
         }
       ],
       buttons: [
@@ -51,7 +52,7 @@ export class HomePage {
             switch (options.type) {
               case 'create':
                 contextTimeSheet = new TimeSheet(1, 1, data.newHour);
-                this.movieService.createTimeSheet(contextTimeSheet)
+                this.registerService.createTimeSheet(contextTimeSheet)
                 .then((result:TimeSheet)=> {
                   this.timeSheet.unshift(result);
                   loading.dismiss();
@@ -60,7 +61,7 @@ export class HomePage {
               case 'update':
                 options.timeSheet.hour = data.newHour;
                 contextTimeSheet = options.timeSheet;
-                this.movieService.updateTimeSheet(contextTimeSheet);
+                this.registerService.updateTimeSheet(contextTimeSheet);
                 break;
             }
             if(options.itemSliding){
