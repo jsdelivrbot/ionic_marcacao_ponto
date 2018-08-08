@@ -3,10 +3,10 @@ import { TimeSheet } from "./TimeSheet.model";
 export class Register {
 
     constructor(
-        public id: number,
         public currentDate: string,
-        public timeSheet: TimeSheet,
-        public lunch: number //time for lunch
+        public lunch?: number, //time for lunch
+        public timeSheet?: TimeSheet,
+        public id?: number,
     ){}
 
 }
