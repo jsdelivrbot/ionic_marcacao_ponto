@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title>Home</ion-title>
+  <ion-navbar>
+    <ion-title>Home | {{newRegisterDate | date : 'dd MMMM yyyy'}}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="createRegister()">
@@ -13,23 +13,33 @@
 <ion-content padding>
   
   <div *ngIf="register == null; else registerList">
-    <h3>You must create a new journey!</h3>
-    <button ion-button (click)="createRegister()">
+    <h1>You must create a new journey!</h1>
+    <ion-item>
+      <ion-icon name="calendar" item-start color="danger"></ion-icon>
+      <ion-label>Get actual date</ion-label>
+      <ion-toggle color="dark" #getActualDate></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="getActualDate.checked == false">
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="DD/MMMM/YYYY" [(ngModel)]="newRegisterDate"></ion-datetime>
+    </ion-item>
+    <br>
+    <button ion-button clear full (click)="createRegister()" class="botaoPrincipal" icon-left>
+      <ion-icon class="icon-bigger" name="add"></ion-icon>
       New Journey 
-      <ion-icon name="add"></ion-icon>
     </button>
   </div>
+
   <ng-template #registerList>
     <ion-list>
-      <h1>Hours registered today:</h1>
       <ion-item-sliding detail-push *ngFor="let time of timeSheet" #itemSliding>
-        <ion-item (click)="onSave('update', itemSliding, time)">{{time.hour}} - ID: {{time.id}}</ion-item>
+        <ion-item class="timeSheets" (click)="onSave('update', itemSliding, time)">{{time.hour | date : 'h:mm a'}}</ion-item>
         <ion-item-options side="right">
           <button ion-button icon-only color="primary" (click)="onSave('update', itemSliding, time)">
-            <ion-icon name="create"></ion-icon>
+            <ion-icon name="create"></ion-icon><span>Edit&nbsp;&nbsp;</span>
           </button> 
           <button ion-button icon-only color="danger" (click)="onDelete(time)">
-            <ion-icon name="trash"></ion-icon>
+            <ion-icon name="trash"></ion-icon><span>Delete</span>
           </button> 
         </ion-item-options>
       </ion-item-sliding>
@@ -37,11 +47,19 @@
 
     <h1>Set a new time:</h1>
     <ion-item>
+      <ion-icon name="time" item-start color="danger"></ion-icon>
+      <ion-label>Get actual time</ion-label>
+      <ion-toggle color="dark" #getActual></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="getActual.checked == false">
       <ion-label>Date</ion-label>
       <ion-datetime displayFormat="h:mm A" [(ngModel)]="newDate"></ion-datetime>
     </ion-item>
     <br>
-    <button (click)="onCreate()" ion-button full>Set Time</button>
+    <button ion-button clear full (click)="onCreate()" class="botaoPrincipal" icon-left>
+      <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
+      Set Time
+    </button>
     <br>
 
     <!-- Soh precisa informar o lunch time quando tiverem duas marcacoes no dia. Caso forem 3 o sistema
@@ -50,8 +68,11 @@
       <ion-label>Lunch time</ion-label>
       <ion-input [(ngModel)]="lunchTime"></ion-input>
     </ion-item>
+    <br>
+    <button ion-button clear full  *ngIf="timeSheet && timeSheet.length >= 2;" (click)="onSave()" class="botaoPrincipal" icon-left>
+      <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
+      End journey
+    </button>
 
-    <button *ngIf="timeSheet && timeSheet.length >= 2;" (click)="onSave()" ion-button full>End journey</button>
-    
   </ng-template> 
 </ion-content>

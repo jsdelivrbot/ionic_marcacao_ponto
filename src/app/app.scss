@@ -1,16 +1,58 @@
-// http://ionicframework.com/docs/theming/
 
+.auth-icon{
+    font-size: 7em;
+}
 
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
+.icon-bigger {
+    font-size:1.8em;
+}
+
+.botao {
+    border: 1px #AFEEEE solid;
+    border-radius: 5px;
+    color:white;
+    padding:26px 5px 26px 5px;
+    font-size:1.1em;
+    //background: linear-gradient(bottom, blue, white);
+    //linear-gradient(135deg, orange, orange 60%, cyan);
+}
+
+.botaoPrincipal{
+    border: 1px #AFEEEE solid;
+    border-radius: 5px;
+    padding:26px 5px 26px 5px;
+    font-size:1.1em;
+    background-color: #AFEEEE; 
+    color: black;
+    font-weight: bold;
+}
+
+ion-item{
+    border-radius: 5px;
+    height: 50px;
+}
+
+ion-item ion-datetime{
+    font-size: 23px;
+}
+
+h1{
+    color: whitesmoke;
+}
+
+ion-content {
+    background: rgb(1, 7, 12) !important;
+    //background-repeat: no-repeat;
+    //background-image: url('../assets/imgs/bkg_1.jpg');
+    //background-position: center;
+    //background-size: contain;
+}
+
+.itens{
+    background: rgba(0, 0, 0, 0); //deixa transparente
+}
+
+.itemSelect{
+    margin-left:-10px;
+    background: rgba(0, 0, 0, 0); //deixa transparente
+}

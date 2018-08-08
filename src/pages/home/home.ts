@@ -23,6 +23,8 @@ export class HomePage {
   timeSheet: TimeSheet[] = []; //maximo de 4 marcacoes
   lunchTime: number;
 
+  newRegisterDate: Date;
+
   constructor(
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
@@ -44,7 +46,11 @@ export class HomePage {
    * apos criar a jornada deve habilitar a criacao de marcacoes
    */
   createRegister() {
-    this.register = new Register(new Date().toDateString());
+    if (this.newRegisterDate == null) {
+      this.newRegisterDate = new Date();
+    }
+    console.log("DATA: "+this.newRegisterDate.toString());
+    this.register = new Register(this.newRegisterDate.toString());
     this.registerService.create(this.register)
       .then((register: Register)=> {
         this.register = register;
@@ -84,11 +90,15 @@ export class HomePage {
         'No'
       ]
     }).present();
-  }
+  } 
 
   onCreate(){
     let loading: Loading = this.showLoading(`Saving ${this.newDate} time...`);
+    if(this.newDate == null){
+      this.newDate = new Date();
+    }
     console.log("settime: "+this.newDate);
+
     let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate.toString(), this.register.id);
     this.registerService.createTimeSheet(newTimeSheet)
       .then((result:TimeSheet)=> {
