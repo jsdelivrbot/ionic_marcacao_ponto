@@ -135,6 +135,16 @@ export class RegisterService {
         return Promise.reject(errorMsg);
       });
   }
+
+  update(register: Register): Promise<boolean>{
+    return this.db.executeSql('UPDATE register SET lunch=? WHERE id=?', [register.lunch,register.id])
+      .then(resultSet => resultSet.rowsAffected >= 0)
+      .catch((error: Error) => {
+        let errorMsg: string = `Error to update Register ${register.id}!` + error.message;
+        console.log(errorMsg);
+        return Promise.reject(errorMsg);
+      });
+  }
     
   // getById(id: number): Promise<Register>{
   //   return this.db.executeSql('SELECT * FROM Register where id=?', [id])

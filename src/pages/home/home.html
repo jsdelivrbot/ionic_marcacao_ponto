@@ -66,13 +66,17 @@
     ja deve saber calcular sozinho. -->
     <ion-item *ngIf="timeSheet && timeSheet.length == 2;">
       <ion-label>Lunch time</ion-label>
-      <ion-input [(ngModel)]="lunchTime"></ion-input>
+      <ion-input [(ngModel)]="lunchTime" type="number"></ion-input>
     </ion-item>
     <br>
-    <button ion-button clear full  *ngIf="timeSheet && timeSheet.length >= 2;" (click)="onSave()" class="botaoPrincipal" icon-left>
+    <button ion-button clear full  *ngIf="timeSheet && timeSheet.length >= 2;" (click)="onEndJourney()" class="botaoPrincipal" icon-left>
       <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
       End journey
     </button>
 
-  </ng-template> 
+  </ng-template>
+  <button ion-button clear full (click)="calculateLunchTime()" class="botao" icon-left>
+    <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
+    Test Hour
+  </button>
 </ion-content>

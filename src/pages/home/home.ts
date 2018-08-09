@@ -3,6 +3,7 @@ import { AlertController, AlertOptions, ItemSliding, NavController, Loading, Loa
 import { Register } from '../../models/Register.model';
 import { TimeSheet } from '../../models/TimeSheet.model';
 import { RegisterService } from '../../providers/register/register.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'page-home',
@@ -28,17 +29,18 @@ export class HomePage {
   constructor(
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
+    public datePipe: DatePipe,
     public navCtrl: NavController,
     public registerService: RegisterService
     ) {}
 
   ionViewDidLoad() {
-    this.registerService.getAllTimeSheet(new Date())
+   /* this.registerService.getAllTimeSheet(new Date())
       .then((timeSheet: TimeSheet[])=>{
         this.timeSheet = timeSheet;
         console.log('buscou as timesheets');
         
-      });
+      });*/
   }
 
   /**
@@ -56,6 +58,53 @@ export class HomePage {
         this.register = register;
         console.log('crou um novo registro com id: '+this.register.id);        
       });
+  }
+
+//  calculateLunchTime(initial:Date, final:Date) : number{
+  calculateLunchTime(){
+    let initial = new Date(2018, 8, null, 11, 50);
+    let final = new Date(2018, 8, null, 12, 40);
+
+    /**
+     * 
+     * Continuar aqui...
+     */
+
+    let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
+    let finalDate = this.datePipe.transform(final, 'H:m').split(':');
+
+    let initialHour = parseInt(initialDate[0]);
+    let initialMinute = parseInt(initialDate[1]);
+    console.log(initialHour + ":"+initialMinute);    
+    
+    let finalHour = parseInt(finalDate[0]);
+    let finalMinute = parseInt(finalDate[1]);
+    console.log(finalHour + ":"+finalMinute);
+
+    let differenceMinutes, differenceHours = 0;
+    if((finalHour - initialHour) >= 1){
+      differenceHours = (finalHour - initialHour);
+    }
+    if((finalMinute - initialMinute) >= 0){
+      differenceMinutes = finalMinute - initialMinute;
+    }
+
+    console.log('Difference Minutes: '+differenceMinutes);
+    console.log('Difference Hours: '+differenceHours);
+    /**/
+    
+    return 0;
+  }
+
+  onEndJourney(){
+    let lunchTime = this.lunchTime;
+    
+    if (this.timeSheet.length == 2){
+     /* lunchTime = this.calculateLunchTime(new Date(this.timeSheet[0].hour), new Date(this.timeSheet[1].hour));*/
+    }
+
+
+    //this.registerService.update()
   }
 
   onSave(type: string, item?: ItemSliding, timeSheet?: TimeSheet):void{

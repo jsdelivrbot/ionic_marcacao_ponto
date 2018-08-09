@@ -14,6 +14,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SqliteHelperService } from '../providers/sqlite-helper/sqlite-helper.service';
 import { RegisterService } from '../providers/register/register.service';
 
+import { DatePipe } from '@angular/common';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -37,6 +39,7 @@ import { RegisterService } from '../providers/register/register.service';
     TabsPage
   ],
   providers: [
+    DatePipe,
     StatusBar,
     SqliteHelperService,
     SQLite,
