@@ -10,14 +10,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding> 
   
   <div *ngIf="register == null; else registerList">
     <h1>You must create a new journey!</h1>
     <ion-item>
       <ion-icon name="calendar" item-start color="danger"></ion-icon>
       <ion-label>Get actual date</ion-label>
-      <ion-toggle color="dark" #getActualDate></ion-toggle>
+      <ion-toggle color="dark" checked="true" #getActualDate></ion-toggle>
     </ion-item>
     <ion-item *ngIf="getActualDate.checked == false">
       <ion-label>Date</ion-label>
@@ -49,7 +49,7 @@
     <ion-item>
       <ion-icon name="time" item-start color="danger"></ion-icon>
       <ion-label>Get actual time</ion-label>
-      <ion-toggle color="dark" #getActual></ion-toggle>
+      <ion-toggle color="dark" checked="true" #getActual></ion-toggle>
     </ion-item>
     <ion-item *ngIf="getActual.checked == false">
       <ion-label>Date</ion-label>

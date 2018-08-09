@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { ReportPage } from '../pages/report/report';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SQLite } from '@ionic-native/sqlite';
@@ -17,7 +17,7 @@ import { RegisterService } from '../providers/register/register.service';
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
+    ReportPage,
     ContactPage,
     HomePage,
     TabsPage
@@ -31,7 +31,7 @@ import { RegisterService } from '../providers/register/register.service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
+    ReportPage,
     ContactPage,
     HomePage,
     TabsPage

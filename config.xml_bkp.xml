@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="timesheet.leoo.rossetti" version="0.2.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Energia solar</name>
+    <name>TimeSheet</name>
     <description>An awesome app to calculate the price of a solar kit.</description>
     <author email="leoo.rossetti@gmail.com" href="http://www.ksenergia.com.br/">Leonardo Rossetti</author>
     <content original-src="index.html" src="http://192.168.1.234:8101" />
