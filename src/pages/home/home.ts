@@ -60,40 +60,50 @@ export class HomePage {
       });
   }
 
-//  calculateLunchTime(initial:Date, final:Date) : number{
-  calculateLunchTime(){
-    let initial = new Date(2018, 8, null, 11, 50);
-    let final = new Date(2018, 8, null, 12, 40);
+  //Returns the lunch time in minutes
+  calculateLunchTime(initial:Date, final:Date) : number {
 
     /**
      * 
-     * Continuar aqui...
+     * THIS METHOD IS READY TO BE USED...
+     * 
      */
 
+  /*calculateLunchTime(){
+    let initial = new Date(2018, 8, null, 11, 0);
+    let final = new Date(2018, 8, null, 12, 40);
+*/
     let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
     let finalDate = this.datePipe.transform(final, 'H:m').split(':');
 
     let initialHour = parseInt(initialDate[0]);
     let initialMinute = parseInt(initialDate[1]);
-    console.log(initialHour + ":"+initialMinute);    
-    
     let finalHour = parseInt(finalDate[0]);
     let finalMinute = parseInt(finalDate[1]);
-    console.log(finalHour + ":"+finalMinute);
 
     let differenceMinutes, differenceHours = 0;
-    if((finalHour - initialHour) >= 1){
-      differenceHours = (finalHour - initialHour);
-    }
-    if((finalMinute - initialMinute) >= 0){
+    
+    if (finalHour == initialHour){
+      
+      differenceMinutes = finalMinute - initialMinute;
+    } else if((finalHour - initialHour) == 1 && initialMinute > finalMinute){
+      //eg.: 11:50 ate 12:40
+      let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
+      differenceMinutes = minutosFaltantesParaFecharUmaHora + finalMinute; // 50
+    } else if(initialMinute > finalMinute) {
+      //eg.: 11:50 ate 12:40
+      let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
+      differenceMinutes = minutosFaltantesParaFecharUmaHora + finalMinute; // 40
+      differenceHours = finalHour - initialHour - 1;
+    } else {
+      differenceHours = finalHour - initialHour;
       differenceMinutes = finalMinute - initialMinute;
     }
-
-    console.log('Difference Minutes: '+differenceMinutes);
-    console.log('Difference Hours: '+differenceHours);
-    /**/
     
-    return 0;
+    // console.log('Difference Minutes: '+differenceMinutes);
+    // console.log('Difference Hours: '+differenceHours);
+    
+    return (differenceHours * 60) + differenceMinutes;
   }
 
   onEndJourney(){
