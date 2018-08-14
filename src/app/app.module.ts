@@ -6,7 +6,6 @@ import { MyApp } from './app.component';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-import { ReportPage } from '../pages/report/report';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SQLite } from '@ionic-native/sqlite';
@@ -19,7 +18,6 @@ import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     MyApp,
-    ReportPage,
     ContactPage,
     HomePage,
     TabsPage
@@ -33,7 +31,6 @@ import { DatePipe } from '@angular/common';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ReportPage,
     ContactPage,
     HomePage,
     TabsPage
