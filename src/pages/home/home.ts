@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, AlertOptions, ItemSliding, NavController, Loading, LoadingController } from 'ionic-angular';
+import { AlertController, AlertOptions, ItemSliding, NavController, Loading, LoadingController, ToastController } from 'ionic-angular';
 import { Register } from '../../models/Register.model';
 import { TimeSheet } from '../../models/TimeSheet.model';
 import { RegisterService } from '../../providers/register/register.service';
@@ -23,7 +23,6 @@ export class HomePage {
   register: Register; //uma jornada
   timeSheet: TimeSheet[] = []; //maximo de 4 marcacoes
   lunchTime: number;
-
   newRegisterDate: Date;
 
   constructor(
@@ -31,7 +30,8 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public datePipe: DatePipe,
     public navCtrl: NavController,
-    public registerService: RegisterService
+    public registerService: RegisterService,
+    private toastCtrl: ToastController
     ) {}
 
   ionViewDidLoad() {
@@ -99,16 +99,37 @@ export class HomePage {
     return (differenceHours * 60) + differenceMinutes;
   }
 
-  onEndJourney() {
-    console.log('enntrou');
-    
-    let lunchTime = this.lunchTime;
+  presentToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      showCloseButton: true,
+      position: 'bottom'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
+  }
 
-    console.log("LENGHT:: "+this.timeSheet.length);
-    console.log(" this.lunchTime:: "+ this.lunchTime);
-        
+  renewVariables() {
+    this.newDate = null;
+    this.register = null;
+    this.timeSheet = []; 
+    this.lunchTime = 0;
+    this.newRegisterDate = null;
+  }
+
+  onEndJourney() {
+    let lunchTime = this.lunchTime;   
+
     if (this.timeSheet.length == 2 && this.lunchTime == null) {
       this.showMessage("Ops!", "Need to informe the lunch time.");
+      return;
+    }
+    if (this.timeSheet.length == 3){
+      this.showMessage("Ops!", "Need to informe 2 or 4 timesheet a day.");
       return;
     }
     
@@ -120,7 +141,13 @@ export class HomePage {
 
     this.register.lunch = lunchTime;
 
-    this.registerService.update(this.register);
+    this.registerService.update(this.register).then((result)=> {
+      if (result) {
+        this.presentToast('Timesheet was added successfully!');
+      }
+
+      this.renewVariables();
+    });
   }
 
   onSave(type: string, item?: ItemSliding, timeSheet?: TimeSheet):void{
