@@ -1,3 +1,41 @@
+ion-item{
+    border-radius: 5px;
+    height: 50px;
+}
+
+ion-item ion-datetime{
+    font-size: 23px;
+}
+
+ion-content {
+    background: rgb(1, 7, 12) !important;
+    //background-repeat: no-repeat;
+    //background-image: url('../assets/imgs/bkg_1.jpg');
+    //background-position: center;
+    //background-size: contain;
+}
+
+p{
+    color: white;
+}
+
+.filterData{
+    width: 100%;
+    border: 1px solid white;
+}
+
+.filterData td{
+    padding: 1px;
+}
+
+.filterData ion-item{
+    width: auto;
+}
+
+.filterData ion-item ion-datetime{
+    font-size: 15px;
+
+}
 
 .auth-icon{
     font-size: 7em;
@@ -27,25 +65,8 @@
     font-weight: bold;
 }
 
-ion-item{
-    border-radius: 5px;
-    height: 50px;
-}
-
-ion-item ion-datetime{
-    font-size: 23px;
-}
-
 h1{
     color: whitesmoke;
-}
-
-ion-content {
-    background: rgb(1, 7, 12) !important;
-    //background-repeat: no-repeat;
-    //background-image: url('../assets/imgs/bkg_1.jpg');
-    //background-position: center;
-    //background-size: contain;
 }
 
 .itens{

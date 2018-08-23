@@ -52,7 +52,7 @@ export class HomePage {
       this.newRegisterDate = new Date();
     }
     console.log("DATA: "+this.newRegisterDate.toString());
-    this.register = new Register(this.newRegisterDate.toString());
+    this.register = new Register(this.newRegisterDate.toString(), "0");
     this.registerService.create(this.register)
       .then((register: Register)=> {
         this.register = register;
@@ -60,45 +60,102 @@ export class HomePage {
       });
   }
 
-  //Returns the lunch time in minutes
-  calculateLunchTime(initial:Date, final:Date) : number {
-  /*calculateLunchTime(){
-    let initial = new Date(2018, 8, null, 11, 0);
-    let final = new Date(2018, 8, null, 12, 40);
-  */
-    let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
-    let finalDate = this.datePipe.transform(final, 'H:m').split(':');
-
-    let initialHour = parseInt(initialDate[0]);
-    let initialMinute = parseInt(initialDate[1]);
-    let finalHour = parseInt(finalDate[0]);
-    let finalMinute = parseInt(finalDate[1]);
-
-    let differenceMinutes, differenceHours = 0;
-    
-    if (finalHour == initialHour){
-      
-      differenceMinutes = finalMinute - initialMinute;
-    } else if((finalHour - initialHour) == 1 && initialMinute > finalMinute){
-      //eg.: 11:50 ate 12:40
-      let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
-      differenceMinutes = minutosFaltantesParaFecharUmaHora + finalMinute; // 50
-    } else if(initialMinute > finalMinute) {
-      //eg.: 11:50 ate 12:40
-      let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
-      differenceMinutes = minutosFaltantesParaFecharUmaHora + finalMinute; // 40
-      differenceHours = finalHour - initialHour - 1;
-    } else {
-      differenceHours = finalHour - initialHour;
-      differenceMinutes = finalMinute - initialMinute;
+  onCreate(){
+    let loading: Loading = this.showLoading(`Saving ${this.newDate} time...`);
+    if(this.newDate == null){
+      this.newDate = new Date();
     }
-    
-     console.log('Difference Minutes: '+differenceMinutes);
-     console.log('Difference Hours: '+differenceHours);
-    
-    return (differenceHours * 60) + differenceMinutes;
+    console.log("settime: "+this.newDate);
+
+    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate.toString(), this.register.id);
+    this.registerService.createTimeSheet(newTimeSheet)
+      .then((result:TimeSheet)=> {
+
+        //need to do that to solve a bug, but I need to think in a better solution for this:
+        let hoursSplit = result.hour.split(':');
+        let dateTest = new Date();
+        dateTest.setHours(parseInt(hoursSplit[0]));
+        dateTest.setMinutes(parseInt(hoursSplit[1]));
+        result.hour = dateTest.toString();
+
+        this.timeSheet.push(result);
+        loading.dismiss();
+      });
   }
 
+  //Returns the lunch time in minutes
+  calculateLunchTime(initial:Date, final:Date) : number {
+    /*calculateLunchTime(){
+      let initial = new Date(2018, 8, null, 11, 0);
+      let final = new Date(2018, 8, null, 12, 40);
+    */
+      let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
+      let finalDate = this.datePipe.transform(final, 'H:m').split(':');
+  
+      let initialHour = parseInt(initialDate[0]);
+      let initialMinute = parseInt(initialDate[1]);
+      let finalHour = parseInt(finalDate[0]);
+      let finalMinute = parseInt(finalDate[1]);
+  
+      let differenceMinutes, differenceHours = 0;
+      
+      if (finalHour == initialHour){
+        
+        differenceMinutes = finalMinute - initialMinute;
+      } else if((finalHour - initialHour) == 1 && initialMinute > finalMinute){
+        //eg.: 11:50 ate 12:40
+        let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
+        differenceMinutes = minutosFaltantesParaFecharUmaHora + finalMinute; // 50
+      } else if(initialMinute > finalMinute) {
+        //eg.: 11:50 ate 12:40
+        let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
+        differenceMinutes = minutosFaltantesParaFecharUmaHora + finalMinute; // 40
+        differenceHours = finalHour - initialHour - 1;
+      } else {
+        differenceHours = finalHour - initialHour;
+        differenceMinutes = finalMinute - initialMinute;
+      }
+      
+       console.log('Difference Minutes: '+differenceMinutes);
+       console.log('Difference Hours: '+differenceHours);
+      
+      return (differenceHours * 60) + differenceMinutes;
+  }
+
+  //Calcula as horas trabalhadas
+  calculateHoursWorked(initial:Date, final:Date) {
+      let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
+      let finalDate = this.datePipe.transform(final, 'H:m').split(':');
+  
+      let initialHour = parseInt(initialDate[0]);
+      let initialMinute = parseInt(initialDate[1]);
+      let finalHour = parseInt(finalDate[0]);
+      let finalMinute = parseInt(finalDate[1]);
+  
+      let hoursWorked = 0.0;
+      
+      if (finalHour == initialHour){
+        hoursWorked = (finalMinute - initialMinute) / 100; //se for 30 minutos tem que guardar 0.3
+      } else if((finalHour - initialHour) == 1 && initialMinute > finalMinute){
+        //eg.: 11:50 ate 12:40
+        let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
+        hoursWorked = (minutosFaltantesParaFecharUmaHora + finalMinute) / 100; // 0.50
+      } else if(initialMinute > finalMinute) {
+        //eg.: 11:50 ate 12:40
+        let minutosFaltantesParaFecharUmaHora = 60 - initialMinute; // 10
+        hoursWorked = (minutosFaltantesParaFecharUmaHora + finalMinute) / 100; // 0.40
+        hoursWorked += finalHour - initialHour - 1;
+      } else {
+        hoursWorked = finalHour - initialHour;
+        hoursWorked += (finalMinute - initialMinute) / 100;
+      }
+      
+        console.log('Hours Worked: '+hoursWorked);
+      
+      return hoursWorked;//(differenceHours * 60) + differenceMinutes;
+  }
+    
+  //Message on the bottom to informe users that the register was created successfully
   presentToast(message) {
     let toast = this.toastCtrl.create({
       message: message,
@@ -123,6 +180,7 @@ export class HomePage {
 
   onEndJourney() {
     let lunchTime = this.lunchTime;   
+    let hoursWorked = 0;
 
     if (this.timeSheet.length == 2 && this.lunchTime == null) {
       this.showMessage("Ops!", "Need to informe the lunch time.");
@@ -135,11 +193,19 @@ export class HomePage {
     
     if (this.timeSheet.length == 2) {
       lunchTime = this.lunchTime;
+      hoursWorked = this.calculateHoursWorked(new Date(this.timeSheet[0].hour), new Date(this.timeSheet[1].hour));
     } if (this.timeSheet.length > 2) {
       lunchTime = this.calculateLunchTime(new Date(this.timeSheet[1].hour), new Date(this.timeSheet[2].hour));
+      hoursWorked = this.calculateHoursWorked(new Date(this.timeSheet[0].hour), new Date(this.timeSheet[3].hour));
     }
 
+    //lunchtime esta sempre em minutos
     this.register.lunch = lunchTime;
+
+    //calculate how much time worked today
+    hoursWorked -= (lunchTime / 100); //20 minutos devem ser removidos como 0.2
+
+    this.register.hoursWorked = hoursWorked.toString();
 
     this.registerService.update(this.register).then((result)=> {
       if (result) {
@@ -183,21 +249,6 @@ export class HomePage {
       ]
     }).present();
   } 
-
-  onCreate(){
-    let loading: Loading = this.showLoading(`Saving ${this.newDate} time...`);
-    if(this.newDate == null){
-      this.newDate = new Date();
-    }
-    console.log("settime: "+this.newDate);
-
-    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate.toString(), this.register.id);
-    this.registerService.createTimeSheet(newTimeSheet)
-      .then((result:TimeSheet)=> {
-        this.timeSheet.push(result);
-        loading.dismiss();
-      });
-  }
 
   private showAlert(options: {itemSliding?: ItemSliding, title: string, type: string, timeSheet?: TimeSheet}):void{
     let alertOptions: AlertOptions = {

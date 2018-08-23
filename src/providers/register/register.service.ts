@@ -32,9 +32,10 @@ export class RegisterService {
             .then(success=> console.log('TimeSheet table created successfully!', success))
             .catch((error: Error) => console.log('Error creating TimeSheet table.', error));
 
-          this.db.executeSql(`CREATE TABLE IF NOT EXISTS register(
+          this.db.executeSql(`CREATE TABLE IF NOT EXISTS register__(
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             currentDate TEXT, 
+            hoursWorked TEXT,
             lunch INTEGER);`, [])
             .then(success=> console.log('Register table created successfully!', success))
             .catch((error: Error) => console.log('Error creating Register table.', error));
@@ -54,7 +55,7 @@ export class RegisterService {
             
             let list: TimeSheet[] = [];
 
-            for(let i = 0; i < resultSet.rows.length; i++){
+            for(let i = 0; i < resultSet.rows.length; i++) {
               list.push(resultSet.rows.item(i));
             }
 
@@ -104,28 +105,36 @@ export class RegisterService {
   getAll(orderBy?: String): Promise<Register[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
-
-        return this.db.executeSql(`SELECT * FROM register ORDER BY ${orderBy || 'DESC'}`)
+        return this.db.executeSql(`SELECT * FROM register__`, [])
           .then(resultSet => {
+            
+            console.log('execute select');
+            console.log(resultSet);
+            console.log(resultSet.rows.length);
             
             let list: Register[] = [];
 
             for(let i = 0; i < resultSet.rows.length; i++){
+              console.log('passou');
+              let test = resultSet.rows.item(i);
+              console.log(test.hoursWorked);
+              console.log(test.hours);
+              console.log(test);
+               
               list.push(resultSet.rows.item(i));
             }
-
+            
             return list;
-          })
-          .catch((error: Error) => {
+          }).catch((error: Error) => {
             let errorMsg: string = 'Error executing method getAll!' + error.message;
             console.log(errorMsg);
             return Promise.reject(errorMsg);
-          })
-      });
+          });
+      })
   }
 
   create(register: Register): Promise<Register>{
-    return this.db.executeSql('INSERT INTO register (currentDate) VALUES (?)', [register.currentDate])
+    return this.db.executeSql('INSERT INTO register__ (currentDate) VALUES (?)', [register.currentDate])
       .then(resultSet => {
         register.id = resultSet.insertId;
         return register;
@@ -137,7 +146,7 @@ export class RegisterService {
   }
 
   update(register: Register): Promise<boolean>{
-    return this.db.executeSql('UPDATE register SET lunch=? WHERE id=?', [register.lunch,register.id])
+    return this.db.executeSql('UPDATE register__ SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
       .then(resultSet => resultSet.rowsAffected >= 0)
       .catch((error: Error) => {
         let errorMsg: string = `Error to update Register ${register.id}!` + error.message;
@@ -145,7 +154,7 @@ export class RegisterService {
         return Promise.reject(errorMsg);
       });
   }
-    
+  
   // getById(id: number): Promise<Register>{
   //   return this.db.executeSql('SELECT * FROM Register where id=?', [id])
   //   .then(resultSet => resultSet.rows.item(0))

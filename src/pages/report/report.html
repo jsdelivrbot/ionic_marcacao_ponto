@@ -1,18 +1,52 @@
-<!--
-  Generated template for the ReportPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>report</ion-title>
+    <ion-title>Report</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+  <div *ngIf="register == null; else registerList">
+    <h1>You do not have journeys!</h1>
+  </div>
+
+  <ng-template #registerList>
+
+    <div>
+      <table class="filterData">
+        <tr>
+          <td>
+            <ion-item>
+              <ion-label>Initial Date</ion-label>
+              <ion-datetime displayFormat="DD/MMMM/YYYY" [(ngModel)]="filterInitialDate"></ion-datetime>
+            </ion-item>
+          </td>
+          <td>
+            <ion-item>
+              <ion-label>Final Date</ion-label>
+              <ion-datetime displayFormat="DD/MMMM/YYYY" [(ngModel)]="filterFinalDate"></ion-datetime>
+            </ion-item>
+          </td>
+        </tr>
+      </table>
+      <button ion-button clear full (click)="onFilter()" class="botao" icon-left>
+          <ion-icon class="icon-bigger" name="search"></ion-icon>
+          Filter
+        </button>
+    </div>
+    <p>* Click on each item to see more details</p>
+    
+    <div *ngFor="let reg of register" style="border:1px solid white;">
+      <p>{{reg.currentDate | date : 'dd/MM/yyyy'}} Lunch: {{reg.lunch}} - Hours Worked: {{reg.hoursWorked}}</p>
+    </div>
+
+  </ng-template>
+
+  <br>
+  <button ion-button clear full (click)="onRefresh()" class="botao" icon-left>
+    <ion-icon class="icon-bigger" name="refresh"></ion-icon>
+    Refresh
+  </button>
+
 
 </ion-content>
