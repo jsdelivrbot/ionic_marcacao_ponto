@@ -24,6 +24,7 @@ export class HomePage {
   timeSheet: TimeSheet[] = []; //maximo de 4 marcacoes
   lunchTime: number;
   newRegisterDate: Date;
+  getActualHour: boolean = true;
 
   constructor(
     public alertCtrl: AlertController,
@@ -60,23 +61,25 @@ export class HomePage {
       });
   }
 
-  onCreate(){
+  onSetTime(){
     let loading: Loading = this.showLoading(`Saving ${this.newDate} time...`);
     if(this.newDate == null){
       this.newDate = new Date();
     }
-    console.log("settime: "+this.newDate);
+    console.log("settime: "+this.newDate); 
 
     let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate.toString(), this.register.id);
     this.registerService.createTimeSheet(newTimeSheet)
       .then((result:TimeSheet)=> {
 
         //need to do that to solve a bug, but I need to think in a better solution for this:
-        let hoursSplit = result.hour.split(':');
-        let dateTest = new Date();
-        dateTest.setHours(parseInt(hoursSplit[0]));
-        dateTest.setMinutes(parseInt(hoursSplit[1]));
-        result.hour = dateTest.toString();
+        if(!this.getActualHour){
+          let hoursSplit = result.hour.split(':');
+          let dateTest = new Date();
+          dateTest.setHours(parseInt(hoursSplit[0]));
+          dateTest.setMinutes(parseInt(hoursSplit[1]));
+          result.hour = dateTest.toString();
+        }
 
         this.timeSheet.push(result);
         loading.dismiss();
@@ -96,6 +99,13 @@ export class HomePage {
       let initialMinute = parseInt(initialDate[1]);
       let finalHour = parseInt(finalDate[0]);
       let finalMinute = parseInt(finalDate[1]);
+
+      if(initialHour == 0){
+        initialHour = 12;
+      }
+      if(finalHour == 0){
+        finalHour = 12;
+      }
   
       let differenceMinutes, differenceHours = 0;
       
@@ -116,21 +126,32 @@ export class HomePage {
         differenceMinutes = finalMinute - initialMinute;
       }
       
-       console.log('Difference Minutes: '+differenceMinutes);
-       console.log('Difference Hours: '+differenceHours);
+      //  console.log('Difference Minutes: '+differenceMinutes);
+      //  console.log('Difference Hours: '+differenceHours);
       
       return (differenceHours * 60) + differenceMinutes;
   }
 
   //Calcula as horas trabalhadas
   calculateHoursWorked(initial:Date, final:Date) {
+    console.log(initial);
+    console.log(final);
+    
+
       let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
-      let finalDate = this.datePipe.transform(final, 'H:m').split(':');
+      let finalDate =  this.datePipe.transform(final, 'H:m').split(':');
   
       let initialHour = parseInt(initialDate[0]);
       let initialMinute = parseInt(initialDate[1]);
       let finalHour = parseInt(finalDate[0]);
       let finalMinute = parseInt(finalDate[1]);
+
+     if(initialHour == 0){
+       initialHour = 12;
+     }
+     if(finalHour == 0){
+       finalHour = 12;
+     }
   
       let hoursWorked = 0.0;
       
@@ -197,7 +218,7 @@ export class HomePage {
     } if (this.timeSheet.length > 2) {
       lunchTime = this.calculateLunchTime(new Date(this.timeSheet[1].hour), new Date(this.timeSheet[2].hour));
       hoursWorked = this.calculateHoursWorked(new Date(this.timeSheet[0].hour), new Date(this.timeSheet[3].hour));
-    }
+    }    
 
     //lunchtime esta sempre em minutos
     this.register.lunch = lunchTime;

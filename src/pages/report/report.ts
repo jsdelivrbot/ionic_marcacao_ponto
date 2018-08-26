@@ -22,40 +22,18 @@ export class ReportPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReportPage');
 
-    this.registerService.getAll()
-      .then((result:Register[]) => {
-        this.register = result;
-        console.log("Result: "+result);
-        result.forEach(test=>{
-          console.log(test.currentDate);
-          
-        })  
-      });
-
-    this.registerService.getAllTimeSheet()
-      .then((result: TimeSheet[])=>{
-        this.timeSheet = result;
-        console.log("Result: "+result);
-      });
+    this.onRefresh();
   }
 
   onRefresh() {
     this.registerService.getAll()
     .then((result:Register[]) => {
       this.register = result;
-      console.log("Result: "+result[0].hoursWorked);
+    });
 
-      result.forEach(test=>{
-        console.log(test.currentDate);
-        
+    this.registerService.getAllTimeSheet()
+      .then((result: TimeSheet[])=>{
+        this.timeSheet = result;
       });
-    });
-
-  this.registerService.getAllTimeSheet()
-    .then((result: TimeSheet[])=>{
-      this.timeSheet = result;
-      console.log(result);
-
-    });
   }
 }

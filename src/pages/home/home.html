@@ -49,14 +49,14 @@
     <ion-item>
       <ion-icon name="time" item-start color="danger"></ion-icon>
       <ion-label>Get actual time</ion-label>
-      <ion-toggle color="dark" checked="true" #getActual></ion-toggle>
+      <ion-toggle color="dark" checked="true" [(ngModel)]="getActualHour" #getActual></ion-toggle>
     </ion-item>
     <ion-item *ngIf="getActual.checked == false">
       <ion-label>Date</ion-label>
       <ion-datetime displayFormat="h:mm A" [(ngModel)]="newDate"></ion-datetime>
     </ion-item>
     <br>
-    <button ion-button clear full (click)="onCreate()" class="botao" icon-left>
+    <button ion-button clear full (click)="onSetTime()" class="botao" icon-left>
       <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
       Set Time
     </button>

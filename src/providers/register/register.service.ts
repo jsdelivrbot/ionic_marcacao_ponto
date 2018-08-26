@@ -106,21 +106,10 @@ export class RegisterService {
     return this.getDb()
       .then((db: SQLiteObject) => {
         return this.db.executeSql(`SELECT * FROM _register`, [])
-          .then(resultSet => {
-            
-            console.log('execute select');
-            console.log(resultSet);
-            console.log(resultSet.rows.length);
-            
+          .then(resultSet => {            
             let list: Register[] = [];
 
             for(let i = 0; i < resultSet.rows.length; i++){
-              console.log('passou');
-              let test = resultSet.rows.item(i);
-              console.log(test.hoursWorked);
-              console.log(test.hours);
-              console.log(test);
-               
               list.push(resultSet.rows.item(i));
             }
             
