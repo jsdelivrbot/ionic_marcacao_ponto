@@ -1,5 +1,5 @@
 ion-item{
-    border-radius: 5px;
+    border-radius: 1px;
     height: 50px;
 }
 
@@ -21,20 +21,18 @@ p{
 
 .filterData{
     width: 100%;
-    border: 1px solid white;
 }
 
 .filterData td{
     padding: 1px;
 }
 
-.filterData ion-item{
-    width: auto;
-}
-
 .filterData ion-item ion-datetime{
     font-size: 15px;
-
+}
+.filterData ion-item{
+    width: 49.5%;
+    margin-bottom: 2px;
 }
 
 .auth-icon{
@@ -47,7 +45,7 @@ p{
 
 .botao {
     border: 1px #AFEEEE solid;
-    border-radius: 5px;
+    border-radius: 1px;
     color:white;
     padding:26px 5px 26px 5px;
     font-size:1.1em;
@@ -57,7 +55,7 @@ p{
 
 .botaoPrincipal{
     border: 1px #AFEEEE solid;
-    border-radius: 5px;
+    border-radius: 1px;
     padding:26px 5px 26px 5px;
     font-size:1.1em;
     background-color: #AFEEEE; 

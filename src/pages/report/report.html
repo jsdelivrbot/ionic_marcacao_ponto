@@ -12,23 +12,28 @@
 
   <ng-template #registerList>
 
-    <div>
-      <table class="filterData">
+    <div class="filterData">
+        <ion-item style="float: left;">
+            <ion-datetime displayFormat="DD/MMMM/YYYY" placeholder="Initial Date" [(ngModel)]="filterInitialDate"></ion-datetime>
+          </ion-item>
+
+          <ion-item style="float: right;">
+              <ion-datetime displayFormat="DD/MMMM/YYYY" placeholder="Final Date" [(ngModel)]="filterFinalDate"></ion-datetime>
+            </ion-item>
+      <!-- <table class="filterData">
         <tr>
           <td>
             <ion-item>
-              <ion-label>Initial Date</ion-label>
-              <ion-datetime displayFormat="DD/MMMM/YYYY" [(ngModel)]="filterInitialDate"></ion-datetime>
+              <ion-datetime displayFormat="DD/MMMM/YYYY" placeholder="Initial Date" [(ngModel)]="filterInitialDate"></ion-datetime>
             </ion-item>
           </td>
           <td>
             <ion-item>
-              <ion-label>Final Date</ion-label>
-              <ion-datetime displayFormat="DD/MMMM/YYYY" [(ngModel)]="filterFinalDate"></ion-datetime>
+              <ion-datetime displayFormat="DD/MMMM/YYYY" placeholder="Final Date" [(ngModel)]="filterFinalDate"></ion-datetime>
             </ion-item>
           </td>
         </tr>
-      </table>
+      </table> -->
       <button ion-button clear full (click)="onFilter()" class="botao" icon-left>
           <ion-icon class="icon-bigger" name="search"></ion-icon>
           Filter

@@ -32,7 +32,7 @@ export class RegisterService {
             .then(success=> console.log('TimeSheet table created successfully!', success))
             .catch((error: Error) => console.log('Error creating TimeSheet table.', error));
 
-          this.db.executeSql(`CREATE TABLE IF NOT EXISTS register__(
+          this.db.executeSql(`CREATE TABLE IF NOT EXISTS _register(
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             currentDate TEXT, 
             hoursWorked TEXT,
@@ -105,7 +105,7 @@ export class RegisterService {
   getAll(orderBy?: String): Promise<Register[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
-        return this.db.executeSql(`SELECT * FROM register__`, [])
+        return this.db.executeSql(`SELECT * FROM _register`, [])
           .then(resultSet => {
             
             console.log('execute select');
@@ -134,7 +134,7 @@ export class RegisterService {
   }
 
   create(register: Register): Promise<Register>{
-    return this.db.executeSql('INSERT INTO register__ (currentDate) VALUES (?)', [register.currentDate])
+    return this.db.executeSql('INSERT INTO _register (currentDate) VALUES (?)', [register.currentDate])
       .then(resultSet => {
         register.id = resultSet.insertId;
         return register;
@@ -146,7 +146,7 @@ export class RegisterService {
   }
 
   update(register: Register): Promise<boolean>{
-    return this.db.executeSql('UPDATE register__ SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
+    return this.db.executeSql('UPDATE _register SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
       .then(resultSet => resultSet.rowsAffected >= 0)
       .catch((error: Error) => {
         let errorMsg: string = `Error to update Register ${register.id}!` + error.message;

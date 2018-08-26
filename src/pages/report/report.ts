@@ -39,7 +39,7 @@ export class ReportPage {
       });
   }
 
-  onRefresh(){
+  onRefresh() {
     this.registerService.getAll()
     .then((result:Register[]) => {
       this.register = result;
