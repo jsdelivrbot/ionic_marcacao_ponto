@@ -50,10 +50,11 @@ export class HomePage {
    */
   createRegister() {
     if (this.newRegisterDate == null) {
-      this.newRegisterDate = new Date();
+      this.newRegisterDate = new Date();      
     }
+    
     console.log("DATA: "+this.newRegisterDate.toString());
-    this.register = new Register(this.newRegisterDate.toString(), "0");
+    this.register = new Register(new Date(this.newRegisterDate), "0");
     this.registerService.create(this.register)
       .then((register: Register)=> {
         this.register = register;

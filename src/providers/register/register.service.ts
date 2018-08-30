@@ -32,9 +32,9 @@ export class RegisterService {
             .then(success=> console.log('TimeSheet table created successfully!', success))
             .catch((error: Error) => console.log('Error creating TimeSheet table.', error));
 
-          this.db.executeSql(`CREATE TABLE IF NOT EXISTS _register(
+          this.db.executeSql(`CREATE TABLE IF NOT EXISTS __________register(
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            currentDate TEXT, 
+            currentDate INTEGER, 
             hoursWorked TEXT,
             lunch INTEGER);`, [])
             .then(success=> console.log('Register table created successfully!', success))
@@ -49,7 +49,6 @@ export class RegisterService {
   getAllTimeSheet(data?: Date, orderBy?: String): Promise<TimeSheet[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
-        //let where = `WHERE hour >= date('now');`;
         return this.db.executeSql(`SELECT * FROM timeSheet ORDER BY ${orderBy || 'DESC'}`)
           .then(resultSet => {
             
@@ -102,17 +101,35 @@ export class RegisterService {
       });
   }
 
-  getAll(orderBy?: String): Promise<Register[]>{
+  getAll(initialDate?: Date, finalDate?:Date, orderBy?: String): Promise<Register[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
-        return this.db.executeSql(`SELECT * FROM _register`, [])
+
+        console.log('getAllTimeSheet');
+        console.log(initialDate);
+        console.log(finalDate);
+        
+        let where = '';
+        if (initialDate != null && finalDate != null){
+
+          initialDate.setDate(initialDate.getDate()-1);
+          //finalDate.setDate(finalDate.getDate()+1);
+
+          where = `WHERE currentDate >= ${initialDate.getTime()} AND currentDate <= ${finalDate.getTime()}`;
+
+          //where = `Where currentDate BETWEEN ${initialDate.getTime()} AND ${finalDate.getTime()}`;
+
+          console.log("where: "+where);
+        }
+
+        return this.db.executeSql(`SELECT * FROM __________register ${where}`, [])
           .then(resultSet => {            
             let list: Register[] = [];
 
             for(let i = 0; i < resultSet.rows.length; i++){
-              list.push(resultSet.rows.item(i));
+              list.push(resultSet.rows.item(i));              
             }
-            
+
             return list;
           }).catch((error: Error) => {
             let errorMsg: string = 'Error executing method getAll!' + error.message;
@@ -122,10 +139,14 @@ export class RegisterService {
       })
   }
 
+
   create(register: Register): Promise<Register>{
-    return this.db.executeSql('INSERT INTO _register (currentDate) VALUES (?)', [register.currentDate])
+    console.log("GETTIME::: "+register.currentDate.getTime());
+    
+    return this.db.executeSql('INSERT INTO __________register (currentDate) VALUES (?)', [register.currentDate.getTime()])
       .then(resultSet => {
         register.id = resultSet.insertId;
+
         return register;
       }).catch((error: Error) => {
         let errorMsg: string = `Error to create Register ${register.currentDate}!` + error.message;
@@ -135,7 +156,7 @@ export class RegisterService {
   }
 
   update(register: Register): Promise<boolean>{
-    return this.db.executeSql('UPDATE _register SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
+    return this.db.executeSql('UPDATE __________register SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
       .then(resultSet => resultSet.rowsAffected >= 0)
       .catch((error: Error) => {
         let errorMsg: string = `Error to update Register ${register.id}!` + error.message;
