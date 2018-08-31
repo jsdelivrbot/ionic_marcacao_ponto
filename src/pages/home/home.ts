@@ -36,7 +36,7 @@ export class HomePage {
     ) {}
 
   ionViewDidLoad() {
-    this.registerService.getAllTimeSheet(new Date())
+    this.registerService.getAllTimeSheet()
       .then((timeSheet: TimeSheet[])=>{
         this.timeSheet = timeSheet;
         console.log('buscou as timesheets');

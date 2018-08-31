@@ -46,10 +46,17 @@ export class RegisterService {
     return this.sqliteHelperService.getDb();
   }
 
-  getAllTimeSheet(data?: Date, orderBy?: String): Promise<TimeSheet[]>{
+  getAllTimeSheet(registerId?: number, orderBy?: String): Promise<TimeSheet[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
-        return this.db.executeSql(`SELECT * FROM timeSheet ORDER BY ${orderBy || 'DESC'}`)
+
+        let where = '';
+        if(registerId != null){
+          where = `WHERE registerId = ${registerId}`;
+        }
+console.log('where:: '+where);
+
+        return this.db.executeSql(`SELECT * FROM timeSheet ${where} ORDER BY ${orderBy || 'DESC'}`)
           .then(resultSet => {
             
             let list: TimeSheet[] = [];
@@ -127,7 +134,14 @@ export class RegisterService {
             let list: Register[] = [];
 
             for(let i = 0; i < resultSet.rows.length; i++){
-              list.push(resultSet.rows.item(i));              
+
+              let currentRegister: Register = resultSet.rows.item(i);
+
+              if(currentRegister.hoursWorked == null){
+                currentRegister.hoursWorked = "";
+              }
+
+              list.push(currentRegister); 
             }
 
             return list;

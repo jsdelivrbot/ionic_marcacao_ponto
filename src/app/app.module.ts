@@ -15,6 +15,7 @@ import { SqliteHelperService } from '../providers/sqlite-helper/sqlite-helper.se
 import { RegisterService } from '../providers/register/register.service';
 
 import { DatePipe } from '@angular/common';
+import { TimeSheetDetailsComponent } from '../components/time-sheet-details/time-sheet-details';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { DatePipe } from '@angular/common';
     ContactPage,
     HomePage,
     TabsPage,
+    TimeSheetDetailsComponent,
     ReportPage
   ],
   imports: [
@@ -36,6 +38,7 @@ import { DatePipe } from '@angular/common';
     ContactPage,
     HomePage,
     TabsPage,
+    TimeSheetDetailsComponent,
     ReportPage
   ],
   providers: [

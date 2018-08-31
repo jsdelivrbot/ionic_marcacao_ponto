@@ -27,7 +27,7 @@
     <p>* Click on each item to see more details</p>
     
     <div *ngFor="let reg of register" style="border:1px solid white;">
-      <p>{{reg.currentDate | date : 'dd/MM/yyyy'}} Lunch: {{reg.lunch}}min - Hours Worked: {{reg.hoursWorked}}</p>
+      <p (click)="onDetailTimeSheet(reg.id)">{{reg.currentDate | date : 'dd/MM/yyyy'}} Lunch: {{reg.lunch}}min - Hours Worked: {{reg.hoursWorked.substr(0, 4)}}</p>
     </div>
 
   </ng-template>

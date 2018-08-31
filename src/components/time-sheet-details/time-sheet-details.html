@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>{{title}}</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+
+      <div>
+        <h2 style="color:white;">{{register.currentDate | date : 'dd/MM/yyyy'}}</h2>
+        <label class="textoLabel">Lunch: </label> <label>{{register.lunch}} minutes</label><br><br>
+        <label class="textoLabel">Hours Worked: </label> <label>{{register.hoursWorked.substr(0, 4)}} hours</label><br><br>
+      </div>
+      <div *ngFor="let timeSheet of timeSheets" style="border:1px solid white;">
+        <label class="textoLabel">{{timeSheet.position}}: </label> <label>{{timeSheet.hour}}</label><br><br>
+      </div>
+
+
+
+
+    <!-- <div id="resultado">
+      <label class="textoLabel">Sistema solar fotovoltaico: </label> <label>{{sistemaSolarComercial}}kw</label><br><br>
+      <label class="textoLabel">Número de paineis: </label> <label>{{numeroPaineis}}</label><br><br>
+      <label class="textoLabel">Area necessária: </label> <label>{{areaNecessaria}}</label><br><br>
+      <label class="textoLabel">Investimento aproximado: </label> <label>{{investimentoAproximado | moeda }}</label> <br><br>
+      <label class="textoLabel">Retorno do investimento: </label> <label>{{tempoInvestimento}}</label>
+    </div> -->
+
+    test
+
+<br>
+
+  <button ion-button block (click)="voltar()" icon-left>
+    <ion-icon class="icon-bigger" name="md-home"></ion-icon>
+    Back
+  </button>
+</ion-content>

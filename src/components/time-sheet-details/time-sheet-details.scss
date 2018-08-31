@@ -1,0 +1,14 @@
+time-sheet-details {
+
+    $font_color: white;
+
+    label{
+        color: $font_color;
+        font-size: 1.4em;
+    }
+
+    .textoLabel{
+        font-weight: bold;
+        color: $font_color;
+    }
+}
