@@ -18,6 +18,9 @@ export class TimeSheetDetailsComponent {
     this.register = this.navParams.get("register");
 
     this.timeSheets = this.navParams.get("timeSheets");
+
+    console.log(this.timeSheets);
+    
   }
 
   voltar(): void {

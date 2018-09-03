@@ -70,14 +70,12 @@ export class ReportPage {
     
 
     this.registerService.getAllTimeSheet(registerId).then((result: TimeSheet[])=> {
-      timeSheets = result;
-      console.log('eaeaeaeae:');
-      
+      timeSheets = result;      
       console.log(result);
       
     });
 
-    this.presentResultModal("Title test", register, timeSheets);
+    this.presentResultModal("Timesheet Details", register, timeSheets);
     
   }
 

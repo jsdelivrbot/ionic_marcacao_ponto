@@ -61,6 +61,8 @@ console.log('where:: '+where);
             
             let list: TimeSheet[] = [];
 
+            console.log('resultSet.rows.length: '+resultSet.rows.length);
+            
             for(let i = 0; i < resultSet.rows.length; i++) {
               list.push(resultSet.rows.item(i));
             }
