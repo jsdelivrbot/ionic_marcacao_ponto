@@ -36,12 +36,24 @@ export class HomePage {
     ) {}
 
   ionViewDidLoad() {
-    this.registerService.getAllTimeSheet()
-      .then((timeSheet: TimeSheet[])=>{
-        this.timeSheet = timeSheet;
-        console.log('buscou as timesheets');
-        
+
+    this.registerService.getByDate(new Date())
+      .then((result: Register)=>{
+        this.register = result;
       });
+
+    if(this.register != null){
+      this.loadTimeSheets(this.register.id);
+    }
+  }
+
+  loadTimeSheets(registerId){
+    this.registerService.getAllTimeSheet(registerId)
+    .then((timeSheet: TimeSheet[])=>{
+      console.log('buscou as timesheets :: '+timeSheet.length);
+      this.timeSheet = timeSheet;
+      
+    });
   }
 
   /**
@@ -69,17 +81,18 @@ export class HomePage {
     }
     console.log("settime: "+this.newDate); 
 
-    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate.toString(), this.register.id);
+    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate, this.register.id);
     this.registerService.createTimeSheet(newTimeSheet)
       .then((result:TimeSheet)=> {
-
+        console.log('inseriu a timesheet: '+result.id);
+        
         //need to do that to solve a bug, but I need to think in a better solution for this:
         if(!this.getActualHour){
-          let hoursSplit = result.hour.split(':');
+          let hoursSplit = result.hour.toString().split(':');
           let dateTest = new Date();
           dateTest.setHours(parseInt(hoursSplit[0]));
           dateTest.setMinutes(parseInt(hoursSplit[1]));
-          result.hour = dateTest.toString();
+          result.hour = dateTest;
         }
 
         this.timeSheet.push(result);
@@ -291,7 +304,7 @@ export class HomePage {
             let contextTimeSheet: TimeSheet;
             switch (options.type) {
               case 'create':
-                contextTimeSheet = new TimeSheet(this.timeSheet.length, data.newHour, this.register.id);
+                contextTimeSheet = new TimeSheet(this.timeSheet.length, new Date(data.newHour), this.register.id);
                 this.registerService.createTimeSheet(contextTimeSheet)
                 .then((result:TimeSheet)=> {
                   this.timeSheet.unshift(result);
@@ -299,7 +312,7 @@ export class HomePage {
                 });
                 break;
               case 'update':
-                options.timeSheet.hour = data.newHour;
+                options.timeSheet.hour = new Date(data.newHour);
                 contextTimeSheet = options.timeSheet;
                 this.registerService.updateTimeSheet(contextTimeSheet)
                 .then((result: boolean)=>{
@@ -319,7 +332,7 @@ export class HomePage {
     };
 
     if(options.type === 'update'){
-      alertOptions.inputs[0]['value'] = options.timeSheet.hour; 
+      alertOptions.inputs[0]['value'] = options.timeSheet.hour.toString(); 
     }
 
     this.alertCtrl.create(alertOptions).present();

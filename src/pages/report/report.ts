@@ -69,6 +69,8 @@ export class ReportPage {
     let timeSheets: TimeSheet[];
     
 
+    
+
     this.registerService.getAllTimeSheet(registerId).then((result: TimeSheet[])=> {
       timeSheets = result;      
       console.log(result);

@@ -56,11 +56,15 @@
       <ion-datetime displayFormat="h:mm A" [(ngModel)]="newDate"></ion-datetime>
     </ion-item>
     <br>
-    <button ion-button clear full (click)="onSetTime()" class="botao" icon-left>
+    <button *ngIf="timeSheet.length != 4;" ion-button clear full (click)="onSetTime()" class="botao" icon-left>
       <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
       Set Time
     </button>
     <br>
+    <button ion-button clear full (click)="loadTimeSheets()" class="botao" icon-left>
+      <ion-icon class="icon-bigger" name="checkmark-circle"></ion-icon>
+      Load Timesheets
+    </button>
     
     
     <!-- Soh precisa informar o lunch time quando tiverem duas marcacoes no dia. Caso forem 3 o sistema

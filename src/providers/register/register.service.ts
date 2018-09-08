@@ -24,11 +24,11 @@ export class RegisterService {
         .then((db: SQLiteObject)=>{
           this.db = db;
 
-          this.db.executeSql(`CREATE TABLE IF NOT EXISTS timeSheet(
+          this.db.executeSql(`CREATE TABLE IF NOT EXISTS _timeSheet(
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             registerId INTEGER,
             position INTEGER, 
-            hour TEXT);`, [])
+            hour INTEGER);`, [])
             .then(success=> console.log('TimeSheet table created successfully!', success))
             .catch((error: Error) => console.log('Error creating TimeSheet table.', error));
 
@@ -46,17 +46,37 @@ export class RegisterService {
     return this.sqliteHelperService.getDb();
   }
 
+  createTimeSheet(timeSheet: TimeSheet): Promise<TimeSheet>{
+    console.log("position: "+timeSheet.position);
+    console.log("registerId: "+timeSheet.registerId);
+    console.log("hour: "+timeSheet.hour);
+
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+
+      return this.db.executeSql('Insert Into _timeSheet (position, registerId, hour) Values (?, ?, ?)', [timeSheet.position, timeSheet.registerId, timeSheet.hour.getTime()])
+        .then(resultSet => {
+          timeSheet.id = resultSet.insertId;
+          return timeSheet;
+        }).catch((error: Error) => {
+          let errorMsg: string = `Error to create timeSheet ${timeSheet.position}!` + error.message;
+          console.log(errorMsg);
+          return Promise.reject(errorMsg);
+        });
+    });
+  }
+
   getAllTimeSheet(registerId?: number, orderBy?: String): Promise<TimeSheet[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
 
         let where = '';
-        if(registerId != null){
-          where = `WHERE registerId = ${registerId}`;
+        if(registerId != null) {
+          where = ` WHERE registerId = ${registerId}`;
         }
-console.log('where:: '+where);
-
-        return this.db.executeSql(`SELECT * FROM timeSheet ${where} ORDER BY ${orderBy || 'DESC'}`)
+        console.log('where:: '+where);
+/**Order By ${orderBy || 'Desc'} */
+        return this.db.executeSql(`Select * From _timeSheet ${where}`, [])
           .then(resultSet => {
             
             let list: TimeSheet[] = [];
@@ -70,53 +90,86 @@ console.log('where:: '+where);
             return list;
           })
           .catch((error: Error) => {
-            let errorMsg: string = 'Error executing method getAll!' + error.message;
+            let errorMsg: string = 'Error executing method getAllTimeSheets!' + error.message;
             console.log(errorMsg);
             return Promise.reject(errorMsg);
           })
       });
   }
-
-  createTimeSheet(timeSheet: TimeSheet): Promise<TimeSheet>{
-    return this.db.executeSql('INSERT INTO timeSheet (position, registerId, hour) VALUES (?, ?, ?)', [timeSheet.position, timeSheet.registerId, timeSheet.hour])
-      .then(resultSet => {
-        timeSheet.id = resultSet.insertId;
-        return timeSheet;
-      }).catch((error: Error) => {
-        let errorMsg: string = `Error to create timeSheet ${timeSheet.position}!` + error.message;
-        console.log(errorMsg);
-        return Promise.reject(errorMsg);
-      });
-  }
-
   
   updateTimeSheet(timeSheet: TimeSheet): Promise<boolean>{
-    return this.db.executeSql('UPDATE timeSheet SET position=?, hour=? WHERE id=?', [timeSheet.position, timeSheet.hour, timeSheet.id])
-      .then(resultSet => resultSet.rowsAffected >= 0)
-      .catch((error: Error) => {
-        let errorMsg: string = `Error to update TimeSheet ${timeSheet.hour}!` + error.message;
-        console.log(errorMsg);
-        return Promise.reject(errorMsg);
-      });
+
+    console.log("HOUR::: "+timeSheet.hour);
+    console.log("HOUR::: "+timeSheet.hour.getTime());
+
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+      return this.db.executeSql('UPDATE _timeSheet SET position=?, hour=? WHERE id=?', [timeSheet.position, timeSheet.hour.getTime(), timeSheet.id])
+        .then(resultSet => resultSet.rowsAffected >= 0)
+        .catch((error: Error) => {
+          let errorMsg: string = `Error to update TimeSheet ${timeSheet.hour}!` + error.message;
+          console.log(errorMsg);
+          return Promise.reject(errorMsg);
+        });
+    });
   }
 
   deleteTimeSheet(id: number): Promise<boolean>{
-    return this.db.executeSql('DELETE FROM timeSheet WHERE id=?', [id])
-      .then(resultSet => resultSet.rowsAffected > 0)
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+      return this.db.executeSql('DELETE FROM _timeSheet WHERE id=?', [id])
+        .then(resultSet => resultSet.rowsAffected > 0)
+        .catch((error: Error) => {
+          let errorMsg: string = `Error deleting TimeSheet with id ${id}!` + error.message;
+          console.log(errorMsg);
+          return Promise.reject(errorMsg);
+        });
+    });
+  }
+
+
+  /** Register */
+
+  create(register: Register): Promise<Register>{
+    console.log("GETTIME::: "+register.currentDate.getTime());
+    console.log("Hours Worked::: "+register.hoursWorked);
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+      return this.db.executeSql('INSERT INTO __________register (currentDate, hoursWorked) VALUES (?, ?)', [register.currentDate.getTime(), register.hoursWorked])
+        .then(resultSet => {
+          register.id = resultSet.insertId;
+          console.log('criou register'+register.id);
+          
+          return register;
+        }).catch((error: Error) => {
+          let errorMsg: string = `Error to create Register ${register.currentDate}!` + error.message;
+          console.log(errorMsg);
+          return Promise.reject(errorMsg);
+        });
+    });
+  }
+
+  getByDate(date: Date): Promise<Register> {
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+
+      return this.db.executeSql('SELECT * FROM Register where currentDate=?', [date.getTime()])
+      .then(resultSet => resultSet.rows.item(0))
       .catch((error: Error) => {
-        let errorMsg: string = `Error deleting TimeSheet with id ${id}!` + error.message;
+        let errorMsg: string = `Error fetching Register with date ${date}!` + error.message;
         console.log(errorMsg);
         return Promise.reject(errorMsg);
       });
+    });
   }
 
   getAll(initialDate?: Date, finalDate?:Date, orderBy?: String): Promise<Register[]>{
     return this.getDb()
       .then((db: SQLiteObject) => {
 
-        console.log('getAllTimeSheet');
-        console.log(initialDate);
-        console.log(finalDate);
+         console.log('getAllRegister');
+        // console.log(initialDate);
+        // console.log(finalDate);
         
         let where = '';
         if (initialDate != null && finalDate != null){
@@ -135,7 +188,7 @@ console.log('where:: '+where);
           .then(resultSet => {            
             let list: Register[] = [];
 
-            for(let i = 0; i < resultSet.rows.length; i++){
+            for(let i = 0; i < resultSet.rows.length; i++) {
 
               let currentRegister: Register = resultSet.rows.item(i);
 
@@ -152,44 +205,23 @@ console.log('where:: '+where);
             console.log(errorMsg);
             return Promise.reject(errorMsg);
           });
-      })
-  }
-
-
-  create(register: Register): Promise<Register>{
-    console.log("GETTIME::: "+register.currentDate.getTime());
-    
-    return this.db.executeSql('INSERT INTO __________register (currentDate) VALUES (?)', [register.currentDate.getTime()])
-      .then(resultSet => {
-        register.id = resultSet.insertId;
-
-        return register;
-      }).catch((error: Error) => {
-        let errorMsg: string = `Error to create Register ${register.currentDate}!` + error.message;
-        console.log(errorMsg);
-        return Promise.reject(errorMsg);
       });
   }
 
   update(register: Register): Promise<boolean>{
-    return this.db.executeSql('UPDATE __________register SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
-      .then(resultSet => resultSet.rowsAffected >= 0)
-      .catch((error: Error) => {
-        let errorMsg: string = `Error to update Register ${register.id}!` + error.message;
-        console.log(errorMsg);
-        return Promise.reject(errorMsg);
-      });
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+      return this.db.executeSql('UPDATE __________register SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
+        .then(resultSet => resultSet.rowsAffected >= 0)
+        .catch((error: Error) => {
+          let errorMsg: string = `Error to update Register ${register.id}!` + error.message;
+          console.log(errorMsg);
+          return Promise.reject(errorMsg);
+        });
+    });
   }
   
-  // getById(id: number): Promise<Register>{
-  //   return this.db.executeSql('SELECT * FROM Register where id=?', [id])
-  //   .then(resultSet => resultSet.rows.item(0))
-  //   .catch((error: Error) => {
-  //     let errorMsg: string = `Error fetching Register with id ${id}!` + error.message;
-  //     console.log(errorMsg);
-  //     return Promise.reject(errorMsg);
-  //   });
-  // }
+  
 
   // getExistsId(id: number): Promise<boolean>{
   //   return this.db.executeSql('SELECT * FROM Register where id=?', [id])
