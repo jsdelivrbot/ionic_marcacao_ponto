@@ -36,22 +36,20 @@ export class ReportPage {
     });
 
     this.registerService.getAllTimeSheet()
-      .then((result: TimeSheet[])=>{
+      .then((result: TimeSheet[])=> {
         this.timeSheet = result;
       });
   }
 
   onFilter(){
-    console.log(this.filterInitialDate);
-    console.log(this.filterFinalDate);
-
-
+    // console.log(this.filterInitialDate);
+    // console.log(this.filterFinalDate);
     let actualDate = new Date();
 
-    if(this.filterInitialDate == null){
+    if(this.filterInitialDate == null) {
       this.filterInitialDate = actualDate;
     } 
-    if(this.filterFinalDate == null){
+    if(this.filterFinalDate == null) {
       this.filterFinalDate = actualDate;
     }
 
@@ -61,24 +59,18 @@ export class ReportPage {
       });
   }
 
-  onDetailTimeSheet(registerId){
-    console.log('Chegou: '+ registerId);
-
+  onDetailTimeSheet(registerId) {
     let register: Register = this.register.filter(x=> x.id == registerId)[0];
 
     let timeSheets: TimeSheet[];
     
-
-    
-
     this.registerService.getAllTimeSheet(registerId).then((result: TimeSheet[])=> {
       timeSheets = result;      
       console.log(result);
       
     });
 
-    this.presentResultModal("Timesheet Details", register, timeSheets);
-    
+    this.presentResultModal("Timesheet Details", register, timeSheets);    
   }
 
     /** Abre o modal de resultado */

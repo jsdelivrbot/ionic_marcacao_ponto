@@ -15,13 +15,13 @@ export class RegisterService {
     public sqliteHelperService: SqliteHelperService
   ) {}
 
-  public getDb():Promise<SQLiteObject>{
+  public getDb():Promise<SQLiteObject> {
     if(this.isFirstCall){
       
       this.isFirstCall = false;
 
       return this.sqliteHelperService.getDb()
-        .then((db: SQLiteObject)=>{
+        .then((db: SQLiteObject)=> {
           this.db = db;
 
           this.db.executeSql(`CREATE TABLE IF NOT EXISTS _timeSheet(
@@ -46,7 +46,7 @@ export class RegisterService {
     return this.sqliteHelperService.getDb();
   }
 
-  createTimeSheet(timeSheet: TimeSheet): Promise<TimeSheet>{
+  createTimeSheet(timeSheet: TimeSheet): Promise<TimeSheet> {
     console.log("position: "+timeSheet.position);
     console.log("registerId: "+timeSheet.registerId);
     console.log("hour: "+timeSheet.hour);
@@ -66,7 +66,7 @@ export class RegisterService {
     });
   }
 
-  getAllTimeSheet(registerId?: number, orderBy?: String): Promise<TimeSheet[]>{
+  getAllTimeSheet(registerId?: number, orderBy?: String): Promise<TimeSheet[]> {
     return this.getDb()
       .then((db: SQLiteObject) => {
 
@@ -97,11 +97,7 @@ export class RegisterService {
       });
   }
   
-  updateTimeSheet(timeSheet: TimeSheet): Promise<boolean>{
-
-    console.log("HOUR::: "+timeSheet.hour);
-    console.log("HOUR::: "+timeSheet.hour.getTime());
-
+  updateTimeSheet(timeSheet: TimeSheet): Promise<boolean> {
     return this.getDb()
     .then((db: SQLiteObject) => {
       return this.db.executeSql('UPDATE _timeSheet SET position=?, hour=? WHERE id=?', [timeSheet.position, timeSheet.hour.getTime(), timeSheet.id])
@@ -114,7 +110,7 @@ export class RegisterService {
     });
   }
 
-  deleteTimeSheet(id: number): Promise<boolean>{
+  deleteTimeSheet(id: number): Promise<boolean> {
     return this.getDb()
     .then((db: SQLiteObject) => {
       return this.db.executeSql('DELETE FROM _timeSheet WHERE id=?', [id])
@@ -130,7 +126,7 @@ export class RegisterService {
 
   /** Register */
 
-  create(register: Register): Promise<Register>{
+  create(register: Register): Promise<Register> {
     console.log("GETTIME::: "+register.currentDate.getTime());
     console.log("Hours Worked::: "+register.hoursWorked);
     return this.getDb()
@@ -163,7 +159,7 @@ export class RegisterService {
     });
   }
 
-  getAll(initialDate?: Date, finalDate?:Date, orderBy?: String): Promise<Register[]>{
+  getAll(initialDate?: Date, finalDate?:Date, orderBy?: String): Promise<Register[]> {
     return this.getDb()
       .then((db: SQLiteObject) => {
 
@@ -172,7 +168,7 @@ export class RegisterService {
         // console.log(finalDate);
         
         let where = '';
-        if (initialDate != null && finalDate != null){
+        if (initialDate != null && finalDate != null) {
 
           initialDate.setDate(initialDate.getDate()-1);
           //finalDate.setDate(finalDate.getDate()+1);
@@ -208,13 +204,26 @@ export class RegisterService {
       });
   }
 
-  update(register: Register): Promise<boolean>{
+  update(register: Register): Promise<boolean> {
     return this.getDb()
     .then((db: SQLiteObject) => {
       return this.db.executeSql('UPDATE __________register SET lunch=?, hoursWorked=? WHERE id=?', [register.lunch, register.hoursWorked, register.id])
         .then(resultSet => resultSet.rowsAffected >= 0)
         .catch((error: Error) => {
           let errorMsg: string = `Error to update Register ${register.id}!` + error.message;
+          console.log(errorMsg);
+          return Promise.reject(errorMsg);
+        });
+    });
+  }
+
+  deleteRegister(id: number): Promise<boolean> {
+    return this.getDb()
+    .then((db: SQLiteObject) => {
+      return this.db.executeSql('DELETE FROM __________register WHERE id=?', [id])
+        .then(resultSet => resultSet.rowsAffected > 0)
+        .catch((error: Error) => {
+          let errorMsg: string = `Error deleting Register with id ${id}!` + error.message;
           console.log(errorMsg);
           return Promise.reject(errorMsg);
         });

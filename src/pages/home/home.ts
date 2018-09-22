@@ -50,9 +50,8 @@ export class HomePage {
   loadTimeSheets(registerId){
     this.registerService.getAllTimeSheet(registerId)
     .then((timeSheet: TimeSheet[])=>{
-      console.log('buscou as timesheets :: '+timeSheet.length);
-      this.timeSheet = timeSheet;
-      
+      //console.log('buscou as timesheets :: '+timeSheet.length);
+      this.timeSheet = timeSheet;      
     });
   }
 
@@ -65,12 +64,11 @@ export class HomePage {
       this.newRegisterDate = new Date();      
     }
     
-    console.log("DATA: "+this.newRegisterDate.toString());
     this.register = new Register(new Date(this.newRegisterDate), "0");
     this.registerService.create(this.register)
       .then((register: Register)=> {
         this.register = register;
-        console.log('crou um novo registro com id: '+this.register.id);        
+        //console.log('crou um novo registro com id: '+this.register.id); 
       });
   }
 
@@ -79,21 +77,20 @@ export class HomePage {
     if(this.newDate == null){
       this.newDate = new Date();
     }
-    console.log("settime: "+this.newDate); 
-
-    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, this.newDate, this.register.id);
+   
+    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, new Date(this.newDate), this.register.id);
     this.registerService.createTimeSheet(newTimeSheet)
       .then((result:TimeSheet)=> {
-        console.log('inseriu a timesheet: '+result.id);
-        
         //need to do that to solve a bug, but I need to think in a better solution for this:
-        if(!this.getActualHour){
-          let hoursSplit = result.hour.toString().split(':');
-          let dateTest = new Date();
-          dateTest.setHours(parseInt(hoursSplit[0]));
-          dateTest.setMinutes(parseInt(hoursSplit[1]));
-          result.hour = dateTest;
-        }
+        // if(this.getActualHour === false){
+        //   let hoursSplit = result.hour.toString().split(':');
+        //   console.log("hoursplit"+hoursSplit);
+          
+        //   let dateTest = new Date();
+        //   dateTest.setHours(parseInt(hoursSplit[0]));
+        //   dateTest.setMinutes(parseInt(hoursSplit[1]));
+        //   result.hour = dateTest;
+        // }
 
         this.timeSheet.push(result);
         loading.dismiss();
@@ -148,10 +145,9 @@ export class HomePage {
 
   //Calcula as horas trabalhadas
   calculateHoursWorked(initial:Date, final:Date) {
-    console.log(initial);
-    console.log(final);
+    // console.log(initial);
+    // console.log(final);
     
-
       let initialDate = this.datePipe.transform(initial, 'H:m').split(':');
       let finalDate =  this.datePipe.transform(final, 'H:m').split(':');
   
@@ -166,6 +162,11 @@ export class HomePage {
      if(finalHour == 0){
        finalHour = 12;
      }
+
+    //  console.log("initialHour: "+initialHour);
+    //  console.log("initialMinute: "+initialMinute);
+    //  console.log("finalHour: "+finalHour);
+    //  console.log("finalMinute: "+finalMinute);
   
       let hoursWorked = 0.0;
       
@@ -332,7 +333,7 @@ export class HomePage {
     };
 
     if(options.type === 'update'){
-      alertOptions.inputs[0]['value'] = options.timeSheet.hour.toString(); 
+      alertOptions.inputs[0]['value'] = new Date(options.timeSheet.hour).toString(); 
     }
 
     this.alertCtrl.create(alertOptions).present();
