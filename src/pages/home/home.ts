@@ -74,18 +74,26 @@ export class HomePage {
 
   onSetTime(){
     let loading: Loading = this.showLoading(`Saving ${this.newDate} time...`);
-    if(this.newDate == null){
-      this.newDate = new Date();
+
+    let dateTimeSheet: Date;
+
+    if(this.newDate == null) {
+      dateTimeSheet = new Date();
+    } else {       
+      let registerDate: Date = this.register.currentDate;
+      let hours = this.newDate.toString().split(':')[0];
+      let minutes = this.newDate.toString().split(':')[1];    
+      dateTimeSheet = new Date(registerDate.getFullYear(), registerDate.getMonth(), registerDate.getDate(), parseInt(hours), parseInt(minutes))
     }
-   
-    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, new Date(this.newDate), this.register.id);
+
+    let newTimeSheet: TimeSheet = new TimeSheet(this.timeSheet.length, dateTimeSheet, this.register.id);
     this.registerService.createTimeSheet(newTimeSheet)
       .then((result:TimeSheet)=> {
         //need to do that to solve a bug, but I need to think in a better solution for this:
         // if(this.getActualHour === false){
         //   let hoursSplit = result.hour.toString().split(':');
         //   console.log("hoursplit"+hoursSplit);
-          
+      
         //   let dateTest = new Date();
         //   dateTest.setHours(parseInt(hoursSplit[0]));
         //   dateTest.setMinutes(parseInt(hoursSplit[1]));
