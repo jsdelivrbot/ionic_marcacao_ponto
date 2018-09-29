@@ -11,4 +11,13 @@ time-sheet-details {
         font-weight: bold;
         color: $font_color;
     }
+
+    .timesheet-items {
+        border:1px solid $main-color-buttons;
+        border-radius:1px;
+        padding-left: 5px;
+        margin-bottom: 1px;
+        font-size: $font-size;
+        padding: 5px;
+    }
 }

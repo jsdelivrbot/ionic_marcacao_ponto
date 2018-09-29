@@ -51,7 +51,7 @@ export class HomePage {
     this.registerService.getAllTimeSheet(registerId)
     .then((timeSheet: TimeSheet[])=>{
       //console.log('buscou as timesheets :: '+timeSheet.length);
-      this.timeSheet = timeSheet;      
+      this.timeSheet = timeSheet;
     });
   }
 

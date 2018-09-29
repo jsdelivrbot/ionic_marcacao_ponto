@@ -23,10 +23,15 @@ export class TimeSheetDetailsComponent {
     this.title = this.navParams.get("title");
     this.register = this.navParams.get("register");
 
-    this.timeSheets = this.navParams.get("timeSheets");
+    //this.timeSheets = this.navParams.get("timeSheets");
 
-    console.log(this.timeSheets);
-    
+    console.log('registerID: '+this.register.id);
+
+    this.registerService.getAllTimeSheet(this.register.id).then((result: TimeSheet[])=> {
+      this.timeSheets = result;      
+      //console.log("result: "+result);
+      
+    });    
   }
 
   onDelete():void {

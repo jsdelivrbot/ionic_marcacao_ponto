@@ -8,12 +8,13 @@
 
       <div>
         <label class="textoLabel">Lunch: </label> <label>{{register.lunch}} minutes</label><br><br>
-        <label class="textoLabel">Hours Worked: </label> <label>{{register.hoursWorked.substr(0, 4)}} hours</label><br><br>
+        <label class="textoLabel">Hours Worked: </label> <label>{{register.hoursWorked.substr(0, 4)}} hours</label>
       </div>
-      <div *ngFor="let timeSheet of timeSheets" style="border:1px solid black;">
-        <label color="dark">{{timeSheet.position}}: </label> <label>{{timeSheet.hour}}</label><br><br>
+      <br><br>
+      <div *ngFor="let time of timeSheets" class="timesheet-items">
+        <label color="dark">{{time.hour | date : 'yyyy/MM/dd h:mm a'}}</label>
       </div>
-
+      <br><br>
 
 
 
@@ -26,7 +27,7 @@
     </div> -->
 
 
-  <button ion-button clear full (click)="onDelete()" class="botao" icon-left>
+  <button ion-button clear full (click)="onDelete()" class="botaoPrincipal" icon-left>
     <ion-icon class="icon-bigger" name="trash"></ion-icon>
     Delete
   </button>
