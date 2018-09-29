@@ -1,18 +1,17 @@
 <ion-header>
     <ion-navbar>
-      <ion-title>{{title}}</ion-title>
+      <ion-title>{{title}} | {{register.currentDate | date : 'dd/MM/yyyy'}}</ion-title>
     </ion-navbar>
   </ion-header>
   
   <ion-content padding>
 
       <div>
-        <h2 style="color:white;">{{register.currentDate | date : 'dd/MM/yyyy'}}</h2>
         <label class="textoLabel">Lunch: </label> <label>{{register.lunch}} minutes</label><br><br>
         <label class="textoLabel">Hours Worked: </label> <label>{{register.hoursWorked.substr(0, 4)}} hours</label><br><br>
       </div>
-      <div *ngFor="let timeSheet of timeSheets" style="border:1px solid white;">
-        <label class="textoLabel">{{timeSheet.position}}: </label> <label>{{timeSheet.hour}}</label><br><br>
+      <div *ngFor="let timeSheet of timeSheets" style="border:1px solid black;">
+        <label color="dark">{{timeSheet.position}}: </label> <label>{{timeSheet.hour}}</label><br><br>
       </div>
 
 
@@ -26,16 +25,13 @@
       <label class="textoLabel">Retorno do investimento: </label> <label>{{tempoInvestimento}}</label>
     </div> -->
 
-    test
 
-    <button ion-button clear full (click)="onDelete()" class="botao" icon-left>
-      <ion-icon class="icon-bigger" name="trash"></ion-icon>
-      Delete
-    </button>
+  <button ion-button clear full (click)="onDelete()" class="botao" icon-left>
+    <ion-icon class="icon-bigger" name="trash"></ion-icon>
+    Delete
+  </button>
 
-<br>
-
-  <button ion-button block (click)="voltar()" icon-left>
+  <button ion-button block (click)="voltar()" class="botaoPrincipal" icon-left>
     <ion-icon class="icon-bigger" name="md-home"></ion-icon>
     Back
   </button>

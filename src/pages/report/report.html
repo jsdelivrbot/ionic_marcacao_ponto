@@ -14,10 +14,10 @@
 
     <div class="filterData">
       <ion-item style="float: left;">
-        <ion-datetime displayFormat="DD/MMMM/YYYY" placeholder="Initial Date" [(ngModel)]="filterInitialDate"></ion-datetime>
+        <ion-datetime color="dark" displayFormat="DD/MMMM/YYYY" placeholder="Initial Date" [(ngModel)]="filterInitialDate"></ion-datetime>
       </ion-item>
       <ion-item style="float: right;">
-          <ion-datetime displayFormat="DD/MMMM/YYYY" placeholder="Final Date" [(ngModel)]="filterFinalDate"></ion-datetime>
+          <ion-datetime color="dark" displayFormat="DD/MMMM/YYYY" placeholder="Final Date" [(ngModel)]="filterFinalDate"></ion-datetime>
       </ion-item>    
       <button ion-button clear full (click)="onFilter()" class="botao" icon-left>
         <ion-icon class="icon-bigger" name="search"></ion-icon>
@@ -26,7 +26,7 @@
     </div>
     <p>* Click on each item to see more details</p>
     
-    <div *ngFor="let reg of register" style="border:1px solid white;">
+    <div *ngFor="let reg of register" class="register-item">
       <p (click)="onDetailTimeSheet(reg.id)">{{reg.currentDate | date : 'dd/MM/yyyy'}} Lunch: {{reg.lunch}}min - Hours Worked: {{reg.hoursWorked.substr(0, 4)}}</p>
     </div>
 

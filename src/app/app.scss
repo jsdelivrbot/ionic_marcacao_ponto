@@ -1,41 +1,46 @@
-ion-item{
+$main-color-buttons: #222;
+$background-color: lightcyan;
+$font-size: 1.1em;
+
+ion-item {
     border-radius: 1px;
     height: 50px;
 }
 
-ion-item ion-datetime{
+ion-item ion-datetime {
     font-size: 23px;
 }
 
 ion-content {
-    background: rgb(1, 7, 12) !important;
+    background-color: $background-color !important;
     //background-repeat: no-repeat;
     //background-image: url('../assets/imgs/bkg_1.jpg');
     //background-position: center;
     //background-size: contain;
 }
 
-p{
-    color: white;
+p {
+    color: #222;
 }
 
-.filterData{
+.filterData {
     width: 100%;
 }
 
-.filterData td{
+.filterData td {
     padding: 1px;
 }
 
-.filterData ion-item ion-datetime{
+.filterData ion-item ion-datetime {
     font-size: 15px;
 }
-.filterData ion-item{
+
+.filterData ion-item {
     width: 49.5%;
     margin-bottom: 2px;
 }
 
-.auth-icon{
+.auth-icon {
     font-size: 7em;
 }
 
@@ -44,34 +49,52 @@ p{
 }
 
 .botao {
-    border: 1px #AFEEEE solid;
+    border: 2px $main-color-buttons solid;
     border-radius: 1px;
-    color:white;
-    padding:26px 5px 26px 5px;
-    font-size:1.1em;
+    color: $main-color-buttons;
+    padding: 18px 5px 18px 5px;
+    font-size: $font-size;
     //background: linear-gradient(bottom, blue, white);
     //linear-gradient(135deg, orange, orange 60%, cyan);
 }
 
-.botaoPrincipal{
-    border: 1px #AFEEEE solid;
+.botaoPrincipal {
+    border: 1px $main-color-buttons solid;
     border-radius: 1px;
-    padding:26px 5px 26px 5px;
-    font-size:1.1em;
-    background-color: #AFEEEE; 
-    color: black;
+    padding: 18px 5px 18px 5px;
+    font-size: $font-size;
+    background-color: $main-color-buttons; 
+    color: $background-color;
     font-weight: bold;
 }
 
-h1{
-    color: whitesmoke;
+h1 {
+    color: $main-color-buttons;
 }
 
-.itens{
+.itens {
     background: rgba(0, 0, 0, 0); //deixa transparente
 }
 
-.itemSelect{
-    margin-left:-10px;
+.itemSelect {
+    margin-left: -10px;
     background: rgba(0, 0, 0, 0); //deixa transparente
+}
+
+ion-item-sliding {
+    border-radius: 1px;
+}
+
+.timeSheets {
+    background-color: $main-color-buttons;
+    font-size: 21px;
+    color: $background-color;
+}
+
+.register-item {
+    border:1px solid black;
+    border-radius:1px;
+    padding-left: 5px;
+    margin-bottom: 1px;
+    font-size: $font-size;
 }

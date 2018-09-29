@@ -35,7 +35,7 @@
       <ion-item-sliding detail-push *ngFor="let time of timeSheet" #itemSliding>
         <ion-item class="timeSheets" (click)="onSave('update', itemSliding, time)">{{time.hour | date : 'yyyy/MM/dd h:mm a'}}</ion-item>
         <ion-item-options side="right">
-          <button ion-button icon-only color="primary" (click)="onSave('update', itemSliding, time)">
+          <button ion-button icon-only color="dark" (click)="onSave('update', itemSliding, time)">
             <ion-icon name="create"></ion-icon><span>Edit&nbsp;&nbsp;</span>
           </button> 
           <button ion-button icon-only color="danger" (click)="onDelete(time)">

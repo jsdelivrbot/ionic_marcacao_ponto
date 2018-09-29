@@ -340,7 +340,7 @@ export class HomePage {
       ]
     };
 
-    if(options.type === 'update'){
+    if(options.type === 'update') {
       alertOptions.inputs[0]['value'] = new Date(options.timeSheet.hour).toString(); 
     }
 

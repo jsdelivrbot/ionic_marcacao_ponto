@@ -38,8 +38,8 @@ export class TimeSheetDetailsComponent {
           handler: () => {
             let loading: Loading = this.showLoading(`Deleting hour ${this.register.currentDate}...`);
             this.registerService.deleteRegister(this.register.id)
-            .then((deleted: boolean)=>{
-              if(deleted){
+            .then((deleted: boolean)=> {
+              if(deleted) {
                 this.voltar();
               }
               loading.dismiss();
