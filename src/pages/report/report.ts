@@ -73,7 +73,7 @@ export class ReportPage {
     this.presentResultModal("Timesheet Details", register, timeSheets);    
   }
 
-    /** Abre o modal de resultado */
+  /** Abre o modal de resultado */
   presentResultModal(title: string, register: Register, timeSheets: TimeSheet[]) {
     let resultModal = this.modalCtrl.create(TimeSheetDetailsComponent, 
       { 

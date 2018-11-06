@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{title}} | {{timeSheet.hour | date : 'dd/MM/yyyy'}} </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>Date</ion-label>
+    <ion-datetime displayFormat="h:mm A" [(ngModel)]="dateTimeSheet"></ion-datetime>
+  </ion-item> 
+
+  <button ion-button clear full (click)="onSave()" class="botao" icon-left>
+    <ion-icon class="icon-bigger" name="trash"></ion-icon>
+    Save
+  </button>
+
+  <button ion-button block (click)="voltar()" class="botaoPrincipal" icon-left>
+    <ion-icon class="icon-bigger" name="md-home"></ion-icon>
+    Back
+  </button>
+</ion-content>

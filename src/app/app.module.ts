@@ -16,11 +16,13 @@ import { RegisterService } from '../providers/register/register.service';
 
 import { DatePipe } from '@angular/common';
 import { TimeSheetDetailsComponent } from '../components/time-sheet-details/time-sheet-details';
+import { EditTimeSheetComponent } from '../components/edit-time-sheet/edit-time-sheet';
 
 @NgModule({
   declarations: [
     MyApp,
     ContactPage,
+    EditTimeSheetComponent,
     HomePage,
     TabsPage,
     TimeSheetDetailsComponent,
@@ -36,6 +38,7 @@ import { TimeSheetDetailsComponent } from '../components/time-sheet-details/time
   entryComponents: [
     MyApp,
     ContactPage,
+    EditTimeSheetComponent,
     HomePage,
     TabsPage,
     TimeSheetDetailsComponent,

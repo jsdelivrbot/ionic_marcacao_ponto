@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, AlertOptions, ItemSliding, NavController, Loading, LoadingController, ToastController } from 'ionic-angular';
+import { AlertController, AlertOptions, ItemSliding, NavController, Loading, LoadingController, ToastController, ModalController } from 'ionic-angular';
 import { Register } from '../../models/Register.model';
 import { TimeSheet } from '../../models/TimeSheet.model';
 import { RegisterService } from '../../providers/register/register.service';
 import { DatePipe } from '@angular/common';
+import { EditTimeSheetComponent } from '../../components/edit-time-sheet/edit-time-sheet';
 
 @Component({
   selector: 'page-home',
@@ -30,6 +31,7 @@ export class HomePage {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public datePipe: DatePipe,
+    public modalCtrl: ModalController,
     public navCtrl: NavController,
     public registerService: RegisterService,
     private toastCtrl: ToastController
@@ -49,7 +51,7 @@ export class HomePage {
 
   loadTimeSheets(registerId){
     this.registerService.getAllTimeSheet(registerId)
-    .then((timeSheet: TimeSheet[])=>{
+    .then((timeSheet: TimeSheet[])=> {
       //console.log('buscou as timesheets :: '+timeSheet.length);
       this.timeSheet = timeSheet;
     });
@@ -82,7 +84,7 @@ export class HomePage {
     } else {       
       let registerDate: Date = this.register.currentDate;
       let hours = this.newDate.toString().split(':')[0];
-      let minutes = this.newDate.toString().split(':')[1];    
+      let minutes = this.newDate.toString().split(':')[1];
       dateTimeSheet = new Date(registerDate.getFullYear(), registerDate.getMonth(), registerDate.getDate(), parseInt(hours), parseInt(minutes))
     }
 
@@ -273,7 +275,7 @@ export class HomePage {
 
   onDelete(timeSheet: TimeSheet):void{
     this.alertCtrl.create({
-      title: `Do you want to delete '${timeSheet.hour}' hour?`,
+      title: `Do you want to delete this register?`,
       buttons:[
         {
           text: 'Yes',
@@ -295,6 +297,12 @@ export class HomePage {
   } 
 
   private showAlert(options: {itemSliding?: ItemSliding, title: string, type: string, timeSheet?: TimeSheet}):void{
+    if(options.type === 'update') {
+      //alertOptions.inputs[0]['value'] = new Date(options.timeSheet.hour).toString(); 
+
+      this.presentEditTimeSheetModal('Edit', new TimeSheet(this.timeSheet.length, new Date(options.timeSheet.hour), this.register.id));
+    } else {
+
     let alertOptions: AlertOptions = {
       title: options.title,
       inputs: [
@@ -308,7 +316,6 @@ export class HomePage {
         {
           text: 'Save',
           handler: (data) => {
-
             let loading: Loading = this.showLoading(`Saving ${data.newHour} time...`);
             let contextTimeSheet: TimeSheet;
             switch (options.type) {
@@ -339,12 +346,10 @@ export class HomePage {
         }
       ]
     };
-
-    if(options.type === 'update') {
-      alertOptions.inputs[0]['value'] = new Date(options.timeSheet.hour).toString(); 
+    
+    this.alertCtrl.create(alertOptions).present();
     }
 
-    this.alertCtrl.create(alertOptions).present();
   }
 
   private showLoading(message?:string): Loading {
@@ -363,5 +368,17 @@ export class HomePage {
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  /** Abre o modal de edicao */
+  presentEditTimeSheetModal(title: string, timeSheet: TimeSheet) {
+    let resultModal = this.modalCtrl.create(EditTimeSheetComponent, 
+      { 
+        title: title,
+        timeSheet: timeSheet
+       });
+       resultModal.onDidDismiss(data => {
+    });
+    resultModal.present();
   }
 }

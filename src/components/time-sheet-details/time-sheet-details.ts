@@ -36,7 +36,7 @@ export class TimeSheetDetailsComponent {
 
   onDelete():void {
     this.alertCtrl.create({
-      title: `Do you want to delete '${this.register.currentDate}' register?`,
+      title: `Do you want to delete this register?`,
       buttons:[
         {
           text: 'Yes',
