@@ -300,7 +300,7 @@ export class HomePage {
     if(options.type === 'update') {
       //alertOptions.inputs[0]['value'] = new Date(options.timeSheet.hour).toString(); 
 
-      this.presentEditTimeSheetModal('Edit', new TimeSheet(this.timeSheet.length, new Date(options.timeSheet.hour), this.register.id));
+      this.presentEditTimeSheetModal('Edit', new TimeSheet(this.timeSheet.length, new Date(options.timeSheet.hour), this.register.id, options.timeSheet.id));
     } else {
 
     let alertOptions: AlertOptions = {

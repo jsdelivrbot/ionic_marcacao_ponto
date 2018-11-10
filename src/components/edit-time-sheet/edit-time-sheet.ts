@@ -30,9 +30,6 @@ export class EditTimeSheetComponent {
     console.log("HOUR:::> "+this.dateTimeSheet);
     console.log(this.timeSheet.registerId);
   }
-  voltar(): void {
-    this.viewCtrl.dismiss();
-  }
 
   onSave(): void {
     console.log("saving: "+this.dateTimeSheet);
@@ -52,6 +49,32 @@ export class EditTimeSheetComponent {
         loading.dismiss();
         this.voltar();
       });
+  }
+
+  onDelete(): void {
+    this.alertCtrl.create({
+      title: `Do you want to delete this timesheet?`,
+      buttons:[
+        {
+          text: 'Yes',
+          handler: () => {
+            let loading: Loading = this.showLoading(`Deleting hour ${new Date(this.timeSheet.hour)}...`);
+            this.registerService.deleteTimeSheet(this.timeSheet.id)
+            .then((deleted: boolean)=> {
+              if(deleted) {
+                this.voltar();
+              }
+              loading.dismiss();
+            });
+          }
+        },
+        'No'
+      ]
+    }).present();
+  }
+
+  voltar(): void {
+    this.viewCtrl.dismiss();
   }
 
   private showLoading(message?:string): Loading {
