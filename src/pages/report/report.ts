@@ -24,8 +24,6 @@ export class ReportPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReportPage');
-
     this.onRefresh();
   }
 
@@ -79,7 +77,8 @@ export class ReportPage {
       { 
         title: title,
         register: register,
-        timeSheets: timeSheets
+        timeSheets: timeSheets,
+        parentPage: this
        });
        resultModal.onDidDismiss(data => {
       //console.log(data);

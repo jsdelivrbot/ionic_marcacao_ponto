@@ -12,6 +12,7 @@ export class EditTimeSheetComponent {
   title: string;
   timeSheet: TimeSheet;
   dateTimeSheet: Date;
+  registerId: number;
 
   constructor(
     public alertCtrl: AlertController,
@@ -27,8 +28,8 @@ export class EditTimeSheetComponent {
     this.timeSheet = this.navParams.get("timeSheet");
     this.dateTimeSheet = this.timeSheet.hour;
     
-    console.log("HOUR:::> "+this.dateTimeSheet);
-    console.log(this.timeSheet.registerId);
+    this.registerId = this.timeSheet.registerId;
+    console.log("HOUR:::> "+ this.timeSheet.registerId);
   }
 
   onSave(): void {
@@ -75,6 +76,7 @@ export class EditTimeSheetComponent {
 
   voltar(): void {
     this.viewCtrl.dismiss();
+    this.navParams.get('parentPage').loadTimeSheets(this.registerId);
   }
 
   private showLoading(message?:string): Loading {

@@ -375,7 +375,8 @@ export class HomePage {
     let resultModal = this.modalCtrl.create(EditTimeSheetComponent, 
       { 
         title: title,
-        timeSheet: timeSheet
+        timeSheet: timeSheet,
+        parentPage: this
        });
        resultModal.onDidDismiss(data => {
     });

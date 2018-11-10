@@ -58,6 +58,7 @@ export class TimeSheetDetailsComponent {
 
   voltar(): void {
     this.viewCtrl.dismiss();
+    this.navParams.get('parentPage').onRefresh();
   }
 
   private showLoading(message?:string): Loading {
